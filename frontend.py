@@ -3,6 +3,17 @@ import streamlit as st
 
 import streamlit as st
 
+def func():
+    st.write("Select an option from below to get started:")
+    option = st.radio(
+    "Which match do you want to predict?",
+    ('', Team1(), Team2()),
+    index = 0
+    )
+    if option == '':
+        st.write("You cannot select an empty string")
+    else :
+        st.write("Option: ",option)
 
 
 def Team1():
@@ -26,17 +37,14 @@ st.markdown(
     "<h1 style='font-size: 36px; margin-top: 50px;'>Welcome to ValoStats!</h1>", 
     unsafe_allow_html=True
 )
-st.write("Select an option from below to get started:")
 
-
-option = st.radio(
-    "Which match do you want to predict?",
-    ('', Team1(), Team2()),
-    index = 0
+option = st.selectbox(
+    "Select the map?",
+    ("Map1", "Map2", "Map3"),
+    index=None,
 )
 
+if option :
+    func()
 
-if option == '':
-    st.write("You cannot select an empty string")
-else :
-    st.write("Option: ",option)
+
