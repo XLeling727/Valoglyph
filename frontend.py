@@ -1,11 +1,13 @@
 import streamlit as st
 import requests
 
+# Base URL for the vlresports API
+BASE_URL = "https://vlr.orlandomm.net/api/v1"
+
 def get_events():
-    url = "https://vlr.orlandomm.net/api/v1/events"
-    params = {"page": 1, "status": "all", "region": "all"}
+    url = f"{BASE_URL}/events"
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url)
         response.raise_for_status()
         data = response.json()
         if data['status'] == 'OK':
@@ -18,7 +20,7 @@ def get_events():
         return []
 
 def get_matches():
-    url = "https://vlr.orlandomm.net/api/v1/matches"
+    url = f"{BASE_URL}/matches"
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -32,23 +34,51 @@ def get_matches():
         st.error(f"Failed to fetch matches: {str(e)}")
         return []
 
+def get_results():
+    url = f"{BASE_URL}/results"
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        if data['status'] == 'OK':
+            return data['data']
+        else:
+            st.error(f"API returned unexpected status: {data['status']}")
+            return []
+    except requests.RequestException as e:
+        st.error(f"Failed to fetch results: {str(e)}")
+        return []
+
 def filter_events(events, status_filter='all'):
     return [event for event in events if status_filter == 'all' or event['status'].lower() == status_filter]
 
-def get_match_options(matches, event_name):
-    confirmed_matches = [
-        match for match in matches 
-        if match['tournament'] == event_name and 
-        all(team['name'] != 'TBD' for team in match['teams'])
-    ]
+def get_match_options(matches, results, event_name, include_results=False):
+    all_matches = []
+    
+    if not include_results:
+        all_matches = [
+            match for match in matches 
+            if match['tournament'] == event_name and 
+            all(team['name'] != 'TBD' for team in match['teams'])
+        ]
+    else:
+        all_matches = [
+            result for result in results
+            if result['tournament'] == event_name
+        ]
     
     options = []
-    for match in confirmed_matches:
+    for match in all_matches:
         team1 = match['teams'][0]['name']
         team2 = match['teams'][1]['name']
         status = match['status']
         
-        if status == 'LIVE':
+        if include_results:
+            score1 = match['teams'][0]['score']
+            score2 = match['teams'][1]['score']
+            ago = match['ago']
+            option = f"{team1} {score1} - {score2} {team2} ({ago} ago)"
+        elif status == 'LIVE':
             score1 = match['teams'][0].get('score', '0')
             score2 = match['teams'][1].get('score', '0')
             option = f"{team1} {score1} - {score2} {team2} (LIVE)"
@@ -76,7 +106,14 @@ def main():
 
         if selected_event:
             matches = get_matches()
-            match_options = get_match_options(matches, selected_event)
+            results = get_results()
+            
+            match_type = st.radio("Select match type", ["Upcoming/Live Matches", "Past Results"])
+            
+            if match_type == "Upcoming/Live Matches":
+                match_options = get_match_options(matches, results, selected_event, include_results=False)
+            else:
+                match_options = get_match_options(matches, results, selected_event, include_results=True)
             
             if match_options:
                 match_descriptions = ["Select a match"] + [option[0] for option in match_options]
@@ -94,7 +131,7 @@ def main():
                         st.write(f"Selected map: {selected_map}")
                         # Here you can add your prediction logic
             else:
-                st.write("No confirmed matches available for this event.")
+                st.write("No matches available for this event.")
     else:
         st.error("No events data available. Please try again later.")
 
