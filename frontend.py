@@ -40,11 +40,18 @@ st.markdown(
 
 option = st.selectbox(
     "Select the map?",
-    ("Map1", "Map2", "Map3"),
+    ( "Haven" , 
+        "Split" , 
+        "Ascent" ,
+        "Icebox" , 
+        "Breeze" , 
+        "Fracture" , 
+        "Abyss" , 
+        "Lotus" , 
+        "Sunset" , 
+        "Pearl" ),
     index=None,
 )
 
 if option :
     func()
-
-
