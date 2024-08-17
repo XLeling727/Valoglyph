@@ -35,13 +35,14 @@ def get_matches():
 def filter_events(events, status_filter='all'):
     return [event for event in events if status_filter == 'all' or event['status'].lower() == status_filter]
 
-def display_matches(matches, event_name):
+def get_match_options(matches, event_name):
     confirmed_matches = [
         match for match in matches 
         if match['tournament'] == event_name and 
         all(team['name'] != 'TBD' for team in match['teams'])
     ]
     
+    options = []
     for match in confirmed_matches:
         team1 = match['teams'][0]['name']
         team2 = match['teams'][1]['name']
@@ -50,12 +51,16 @@ def display_matches(matches, event_name):
         if status == 'LIVE':
             score1 = match['teams'][0].get('score', '0')
             score2 = match['teams'][1].get('score', '0')
-            st.write(f"{team1} {score1} - {score2} {team2} (LIVE)")
+            option = f"{team1} {score1} - {score2} {team2} (LIVE)"
         elif status == 'Upcoming':
             match_time = match.get('in', 'Time not available')
-            st.write(f"{team1} vs {team2} (In {match_time})")
+            option = f"{team1} vs {team2} (In {match_time})"
         else:
-            st.write(f"{team1} vs {team2} ({status})")
+            option = f"{team1} vs {team2} ({status})"
+        
+        options.append((option, match))
+    
+    return options
 
 def main():
     st.title("ValoStats: Valorant Event Predictor")
@@ -71,15 +76,25 @@ def main():
 
         if selected_event:
             matches = get_matches()
-            display_matches(matches, selected_event)
+            match_options = get_match_options(matches, selected_event)
             
-            # Map selection
-            maps = ["Haven", "Split", "Ascent", "Icebox", "Breeze", "Fracture", "Abyss", "Lotus", "Sunset", "Pearl"]
-            selected_map = st.selectbox("Select the map", maps, index=None)
+            if match_options:
+                match_descriptions = ["Select a match"] + [option[0] for option in match_options]
+                selected_match_index = st.selectbox("Select a match for prediction", range(len(match_descriptions)), format_func=lambda x: match_descriptions[x])
+                
+                if selected_match_index > 0:
+                    selected_match = match_options[selected_match_index - 1][1]
+                    
+                    # Map selection
+                    maps = ["Haven", "Split", "Ascent", "Icebox", "Breeze", "Fracture", "Abyss", "Lotus", "Sunset", "Pearl"]
+                    selected_map = st.selectbox("Select the map", maps, index=None)
 
-            if selected_map:
-                st.write(f"Selected map: {selected_map}")
-                # Here you can add your prediction logic
+                    if selected_map:
+                        st.write(f"Selected match: {match_descriptions[selected_match_index]}")
+                        st.write(f"Selected map: {selected_map}")
+                        # Here you can add your prediction logic
+            else:
+                st.write("No confirmed matches available for this event.")
     else:
         st.error("No events data available. Please try again later.")
 
