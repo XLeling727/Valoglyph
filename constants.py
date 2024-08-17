@@ -1,0 +1,4 @@
+
+
+Teams = ("MIBR", "Leviatán", "Sentinels", "NRG Esports", "FURIA", "100 Thieves", "LOUD", "Evil Geniuses", "G2 Esports", "Cloud9", "KRÜ Esports", "Titan Esports Club", "JDG Esports", "All Gamers", "TYLOO", "Bilibili Gaming", "Wolves Esports", "Dragon Ranger Gaming", "Nova Esports", "FunPlus Phoenix", "Trace Esports", "EDward Gaming", "ZETA DIVISION", "DRX", "Team Secret", "BLEED", "T1", "Gen.G", "Paper Rex", "Talon Esports", "Rex Regum Qeon", "DetonatioN FocusMe", "Global Esports", "FUT Esports", "KOI", "BBL Esports", "FNATIC", "Team Heretics", "Natus Vincere", "GIANTX", "Gentle Mates", "Team Vitality", "Team Liquid", "Karmine Corp")
+Maps = ("Bind", "Haven", "Split", "Ascent", "Icebox", "Breeze", "Fracture", "Abyss", "Lotus", "Sunset" , "Pearl")
