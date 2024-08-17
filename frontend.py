@@ -3,7 +3,8 @@ import streamlit as st
 
 import streamlit as st
 
-def func():
+# display options when the user selects maps
+def display_options():
     st.write("Select an option from below to get started:")
     option = st.radio(
     "Which match do you want to predict?",
@@ -14,6 +15,7 @@ def func():
         st.write("You cannot select an empty string")
     else :
         st.write("Option: ",option)
+    return option
 
 
 def Team1():
@@ -22,29 +24,26 @@ def Team1():
 def Team2():
     return "TEAM C vs  TEAM D"
 
-# Sidebar description with red
-st.sidebar.markdown(
-    "<h1 style='color: red; font-size: 36px; margin-top: 30px;'>About ValoStats</h1>", 
-    unsafe_allow_html=True
-)
+if __name__ == "__main__":
+    st.sidebar.markdown(
+        "<h1 style='color: red; font-size: 36px; margin-top: 30px;'>About ValoStats</h1>", 
+        unsafe_allow_html=True
+    )
 
-st.sidebar.write("""
-ValoStats is your go-to tool for mastering Valorant. 
-""")
+    st.sidebar.write("""
+    ValoStats is your go-to tool for mastering Valorant. 
+    """)
 
 
-st.markdown(
-    "<h1 style='font-size: 36px; margin-top: 50px;'>Welcome to ValoStats!</h1>", 
-    unsafe_allow_html=True
-)
+    st.markdown(
+        "<h1 style='font-size: 36px; margin-top: 50px;'>Welcome to ValoStats!</h1>", 
+        unsafe_allow_html=True
+    )
 
-option = st.selectbox(
-    "Select the map?",
-    ("Map1", "Map2", "Map3"),
-    index=None,
-)
+    options = display_options()
+    if (options):
+        for i in range(11):
+            st.write(i)
 
-if option :
-    func()
 
 
