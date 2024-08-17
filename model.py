@@ -3,6 +3,13 @@ import pandas as pd
 from sklearn.tree import DecisionTreeRegressor  
 from enum import Enum
 
+with open("Dataset/overview.csv", "r") as f:
+    lines = f.readlines()
+with open("Dataset/overview.csv", "w") as f:
+    for line in lines:
+        if "attack" not in line.strip("\n") and "defend" not in line.strip("\n"):
+            f.write(line)
+
 TEAMS = {"MIBR": 0, 
          "LeviatÃ¡n": 1, 
          "Sentinels": 2, 
@@ -60,24 +67,21 @@ MAPS = {"Bind" : 0,
         "Sunset" : 9, 
         "Pearl" : 10}
 
-data1 = np.genfromtxt("maps_scores.csv", delimiter=',', dtype=None)
-data = data1[1:, 4:15]
+data1 = np.genfromtxt("Dataset/maps_scores.csv", delimiter=',', dtype=None)
 
-indata = data1[1:, [4, 5, 10]]
+score = data1[1:, [6, 11, 5]]
 
-new_indata = np.copy(indata)
-for k, v in MAPS.items(): new_indata[indata[:,0]==k, 0] = v
-for k, v in TEAMS.items(): new_indata[indata[:,1]==k, 1] = v
-for k, v in TEAMS.items(): new_indata[indata[:,2]==k, 2] = v
+# map, player, team, agent, ACE, winner
+XY = data2[1:, [4, 5, 6, 7, 8, 0]]
 
-outdata = np.zeros((data.size // 11, 2))
+for i in range(0, score.size() // 3):
+        if score[i, 0] < score[i, 1]:
+                score[i, 2] = data1[i+1, 10]
 
-# new_indata[:, 3] = np.abs(data[:, 2].astype(np.int64) - data[:, 7].astype(np.int64))
-outdata[data[:, 2].astype(np.int64) > data[:, 7].astype(np.int64), 0] = 100
-outdata[data[:, 2].astype(np.int64) < data[:, 7].astype(np.int64), 1] = 100
+indata = np.repeat(score, repeats=5, axis=0)
 
-print(new_indata) # Input for training
-print(outdata) # Desired output for training
+print(indata)
 
+XY[1:, 5] = indata[1:, 3]
 
-testStat = np.array([[1, 8, 8]])[:, np.newaxis]
+print(XY) # Input for training
