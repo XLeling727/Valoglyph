@@ -1,4 +1,4 @@
-import numpy as np
+
 
 Teams = {"MIBR": 0, 
          "Leviatán": 1, 
