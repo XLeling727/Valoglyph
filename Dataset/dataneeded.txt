@@ -1,0 +1,12 @@
+
+We need:
+Match Scores (how many maps won) from map_scores.csv
+Team A name from map_scores.csv
+Team B name from map_scores.csv
+Map name from map_scores.csv
+
+
+Average team Acs (calculated from adding all the player Acs and dividing by 5), this is in player_strats.csv 
+be careful choose only the rows with multiple agents in the agents column 
+as they are the calculated averages between all agents picked by the player in that match
+Average team KAST (same as above, add only multiple agents row, and divide by 5) found in player_strats.csv
