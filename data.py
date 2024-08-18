@@ -359,9 +359,20 @@ def pred(map, team_a, team_b, teama_acs, teamb_acs):
     print(f"Combined probability of Team A winning: {(probability_all[0] + probability_last15[0]) / 2:.2f}")
     print(f"Probability of an upset: {upset_prob:.2f}")
     print(f"Confidence in prediction: {confidence:.2f}")
-
+    max_value = 1200000
+    
+    if ((probability_all[0] + probability_last15[0]) / 2) < 0.5:
+        if upset_prob > 0.5:
+            bet_amount = max_value * upset_prob * confidence
+            print(f"Bet {bet_amount:.2f} on {winning_team} as an upset.")
+        else:
+            print(f"Do not bet; probability and upset risk are too low.")
+    else:
+        bet_amount = max_value * ((probability_all[0] + probability_last15[0]) / 2) * confidence
+        print(f"Bet {bet_amount:.2f} on {winning_team}.")
+            
     return [team_a_name, (probability_all[0] + probability_last15[0]) / 2, upset_prob, confidence,
-            team_b_name]
+            team_b_name, bet_amount, winning_team]
     
     
     

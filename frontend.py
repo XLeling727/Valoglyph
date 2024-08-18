@@ -193,7 +193,11 @@ def main():
                         print(f"{prediction[0]} has a {prediction[1] * 100:.2f}% chance of winning this map.")
                         print(f"{prediction[4]} has a {100 - (prediction[1] * 100):.2f}% chance of winning this map.")
                         print(f"There is an {prediction[2] * 100:.2f}% chance of an upset.")
-                        print(f"This prediction was made with an {prediction[3] * 100:.2f}% confidence")   
+                        print(f"This prediction was made with an {prediction[3] * 100:.2f}% confidence") 
+
+                        st.write(f"Bet {prediction[5] * (1-prediction[2]):.2f} on {prediction[6]}.")
+                        st.write(f"Bet {prediction[5] * (prediction[2]):.2f} on {prediction[0] if prediction[6] != prediction[0] else prediction[4]}.")
+                            
                         display_prediction_statistics(prediction)
             else:
                 st.write("No matches available for this event.")
