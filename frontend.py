@@ -136,8 +136,15 @@ def main():
                         st.write(f"Selected match: {match_descriptions[selected_match_index]}")
                         st.write(f"Selected map: {selected_map}")
                         # Here you can add your prediction logic
-                        input["map"] = selected_map
-                        input["match"] = match_descriptions[selected_match_index]
+                        
+                        split1 = match_descriptions[selected_match_index].index("vs")
+                        split2 = match_descriptions[selected_match_index].index("(In")
+                        
+                        input["Map"] = selected_map
+                        input["Team A"] = match_descriptions[selected_match_index][0:split1-1]
+                        input["Team B"] = match_descriptions[selected_match_index][split1+3:split2-1]
+                        
+                        
             else:
                 st.write("No matches available for this event.")
     else:
