@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-
+from data import pred
 # Base URL for the vlresports API
 BASE_URL = "https://vlr.orlandomm.net/api/v1"
 
@@ -139,10 +139,14 @@ def main():
                         
                         split1 = match_descriptions[selected_match_index].index("vs")
                         split2 = match_descriptions[selected_match_index].index("(In")
-                        
-                        input["Map"] = selected_map
-                        input["Team A"] = match_descriptions[selected_match_index][0:split1-1]
-                        input["Team B"] = match_descriptions[selected_match_index][split1+3:split2-1]
+
+                        prediction = pred(selected_map, match_descriptions[selected_match_index][0:split1-1], 
+                                            match_descriptions[selected_match_index][split1+3:split2-1], 200, 200)
+
+                        st.write(f"{prediction[0]} has a {prediction[1] * 100:.2f}% chance of winning this map.")
+                        st.write(f"{prediction[4]} has a {100 - (prediction[1] * 100):.2f}% chance of winning this map.")
+                        st.write(f"There is an {prediction[2] * 100:.2f}% chance of an upset.")
+                        st.write(f"This prediction was made with an {prediction[3] * 100:.2f}% confidence")
                         
                         
             else:
