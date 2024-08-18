@@ -98,6 +98,7 @@ def get_match_options(matches, results, event_name, include_results=False):
 
 
 def main():
+    input = dict()
     st.title("ValoStats: Valorant Event Predictor")
 
     events = get_events()
@@ -108,7 +109,7 @@ def main():
         
         event_names = [event['name'] for event in filtered_events]
         selected_event = st.selectbox("Select an event", [""] + event_names)
-
+        input["selected_event"] = selected_event
         if selected_event:
             matches = get_matches()
             results = get_results()
@@ -135,6 +136,8 @@ def main():
                         st.write(f"Selected match: {match_descriptions[selected_match_index]}")
                         st.write(f"Selected map: {selected_map}")
                         # Here you can add your prediction logic
+                        input["map"] = selected_map
+                        input["match"] = match_descriptions[selected_match_index]
             else:
                 st.write("No matches available for this event.")
     else:
