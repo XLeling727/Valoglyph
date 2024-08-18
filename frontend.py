@@ -98,6 +98,7 @@ def get_match_options(matches, results, event_name, include_results=False):
 
 
 def main():
+    input = dict()
     st.title("ValoStats: Valorant Event Predictor")
 
     events = get_events()
@@ -108,7 +109,7 @@ def main():
         
         event_names = [event['name'] for event in filtered_events]
         selected_event = st.selectbox("Select an event", [""] + event_names)
-
+        input["selected_event"] = selected_event
         if selected_event:
             matches = get_matches()
             results = get_results()
@@ -138,9 +139,10 @@ def main():
                         
                         split1 = match_descriptions[selected_match_index].index("vs")
                         split2 = match_descriptions[selected_match_index].index("(In")
-                        print(match_descriptions[selected_match_index][0:split1-1])
-                        print(match_descriptions[selected_match_index][split1+3:split2-1])
-                        print(selected_map)
+                        
+                        input["Map"] = selected_map
+                        input["Team A"] = match_descriptions[selected_match_index][0:split1-1]
+                        input["Team B"] = match_descriptions[selected_match_index][split1+3:split2-1]
                         
                         
             else:
