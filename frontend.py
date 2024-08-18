@@ -1,6 +1,9 @@
 import streamlit as st
 import requests
 from data import pred
+import pandas as pd
+import matplotlib.pyplot as plt
+
 # Base URL for the vlresports API
 BASE_URL = "https://vlr.orlandomm.net/api/v1"
 
@@ -97,6 +100,50 @@ def get_match_options(matches, results, event_name, include_results=False):
 
 
 
+def display_prediction_statistics(prediction):
+    # Bar chart
+    data = {
+        "Metric": [
+            f"{prediction[0]} Win Probability", 
+            f"{prediction[4]} Win Probability", 
+            "Upset Probability", 
+            "Prediction Confidence"
+        ],
+        "Percentage": [
+            prediction[1] * 100, 
+            100 - (prediction[1] * 100), 
+            prediction[2] * 100, 
+            prediction[3] * 100
+        ]
+    }
+    df = pd.DataFrame(data)
+
+
+
+    # Pie chart with custom colors and black background
+    labels = [f"{prediction[0]} Win Probability", f"{prediction[4]} Win Probability"]
+    sizes = [prediction[1] * 100, 100 - (prediction[1] * 100)]
+    colors = ['#FF0000', '#78d8bb']  # Red and #78d8bb
+
+    fig, ax = plt.subplots()
+    fig.patch.set_facecolor('black')  # Set the background color of the figure to black
+    ax.set_facecolor('0e1217')         # Set the background color of the axes to black
+    wedges, texts, autotexts = ax.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', startangle=90)
+    
+    # Set the color of the labels and percentages to white
+    for text in texts:
+        text.set_color("white")
+    for autotext in autotexts:
+        autotext.set_color("white")
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    st.pyplot(fig)
+
+    # Table
+    df["Percentage"] = df["Percentage"].apply(lambda x: f"{x:.2f}%")
+    st.table(df)
+
+  
 def main():
     input = dict()
     st.title("ValoStats: Valorant Event Predictor")
@@ -143,12 +190,11 @@ def main():
                         prediction = pred(selected_map, match_descriptions[selected_match_index][0:split1-1], 
                                             match_descriptions[selected_match_index][split1+3:split2-1], 200, 200)
 
-                        st.write(f"{prediction[0]} has a {prediction[1] * 100:.2f}% chance of winning this map.")
-                        st.write(f"{prediction[4]} has a {100 - (prediction[1] * 100):.2f}% chance of winning this map.")
-                        st.write(f"There is an {prediction[2] * 100:.2f}% chance of an upset.")
-                        st.write(f"This prediction was made with an {prediction[3] * 100:.2f}% confidence")
-                        
-                        
+                        print(f"{prediction[0]} has a {prediction[1] * 100:.2f}% chance of winning this map.")
+                        print(f"{prediction[4]} has a {100 - (prediction[1] * 100):.2f}% chance of winning this map.")
+                        print(f"There is an {prediction[2] * 100:.2f}% chance of an upset.")
+                        print(f"This prediction was made with an {prediction[3] * 100:.2f}% confidence")   
+                        display_prediction_statistics(prediction)
             else:
                 st.write("No matches available for this event.")
     else:
