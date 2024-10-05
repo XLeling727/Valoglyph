@@ -1,0 +1,35 @@
+{
+  "name": "vrlggscraper",
+  "version": "1.0.3",
+  "description": "A simple API for Valorant Esports Scraper",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/.",
+    "dev": "nodemon src/."
+  },
+  "keywords": [
+    "valorant",
+    "scraper",
+    "api",
+    "valorant-api",
+    "valorant-scraper",
+    "valorant-api-scraper",
+    "valorant-api-scraper",
+    "esports",
+    "valorant-esports",
+    "valorant-esports-api",
+    "valorant-esports-scrap"
+  ],
+  "author": "Orloxx23",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "request-promise": "^4.2.6"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

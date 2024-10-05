@@ -1,2 +1,5 @@
-ignore.py
-**/.DS_Store
+```git
+
+__pycache__/*
+./DS_Store
+```

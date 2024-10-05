@@ -1,64 +1,66 @@
 # %%
 import pandas as pd
 import numpy as np
+import os
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 # %%
-TEAMS = {"MIBR": 0, 
-         "Leviatán": 1, 
-         "Sentinels": 2, 
-         "NRG Esports": 3, 
-         "FURIA": 4, 
-         "100 Thieves": 5, 
-         "LOUD" : 6, 
-         "Evil Geniuses" : 7, 
-         "G2 Esports" : 8, 
-         "Cloud9" : 9, 
-         "KRÜ Esports" : 10, 
-         "Titan Esports Club" : 11, 
-         "JDG Esports" : 12, 
-         "All Gamers" : 13, 
-         "TYLOO" : 14, 
-         "Bilibili Gaming" : 15, 
-         "Wolves Esports" : 16, 
-         "Dragon Ranger Gaming" : 17, 
-         "Nova Esports" : 18, 
-         "FunPlus Phoenix" : 19, 
-         "Trace Esports" : 20, 
-         "EDward Gaming" : 21, 
-         "ZETA DIVISION" : 22, 
-         "DRX" : 23, 
-         "Team Secret" : 24, 
-         "BLEED" : 25, 
-         "T1" : 26, 
-         "Gen.G" : 27, 
-         "Paper Rex" : 28, 
-         "Talon Esports" : 29, 
-         "Rex Regum Qeon" : 30, 
-         "DetonatioN FocusMe" : 31, 
-         "Global Esports" : 32, 
-         "FUT Esports" : 33, 
-         "KOI" : 34, 
-         "BBL Esports" : 35, 
-         "FNATIC" : 36, 
-         "Team Heretics" : 37, 
-         "Natus Vincere" : 38, 
-         "GIANTX" : 39, 
-         "Gentle Mates" : 40, 
-         "Team Vitality" : 41, 
-         "Team Liquid" : 42, 
-         "Karmine Corp": 43}
+TEAMS = {"MIBR": 1, 
+         "Leviatán": 2, 
+         "Sentinels": 3, 
+         "NRG Esports": 4, 
+         "FURIA": 5, 
+         "100 Thieves": 6, 
+         "LOUD" : 7, 
+         "Evil Geniuses" : 8, 
+         "G2 Esports" : 9, 
+         "Cloud9" : 10, 
+         "KRÜ Esports" : 11, 
+         "Titan Esports Club" : 12, 
+         "JDG Esports" : 13, 
+         "All Gamers" : 14, 
+         "TYLOO" : 15, 
+         "Bilibili Gaming" : 16, 
+         "Wolves Esports" : 17, 
+         "Dragon Ranger Gaming" : 18, 
+         "Nova Esports" : 19, 
+         "FunPlus Phoenix" : 20, 
+         "Trace Esports" : 21, 
+         "EDward Gaming" : 22, 
+         "ZETA DIVISION" : 23, 
+         "DRX" : 24, 
+         "Team Secret" : 25, 
+         "BLEED" : 26, 
+         "T1" : 27, 
+         "Gen.G" : 28, 
+         "Paper Rex" : 29, 
+         "Talon Esports" : 30, 
+         "Rex Regum Qeon" : 31, 
+         "DetonatioN FocusMe" : 32, 
+         "Global Esports" : 33, 
+         "FUT Esports" : 34, 
+         "KOI" : 35, 
+         "BBL Esports" : 36, 
+         "FNATIC" : 37, 
+         "Team Heretics" : 38, 
+         "Natus Vincere" : 39, 
+         "GIANTX" : 40, 
+         "Gentle Mates" : 41, 
+         "Team Vitality" : 42, 
+         "Team Liquid" : 43, 
+         "Karmine Corp": 44}
 
-MAPS = {"Bind" : 0, 
-        "Haven" : 1, 
-        "Split" : 2, 
-        "Ascent" : 3,
-        "Icebox" : 4, 
-        "Breeze" : 5, 
-        "Fracture" : 6, 
-        "Abyss" : 7, 
-        "Lotus" : 8, 
-        "Sunset" : 9, 
-        "Pearl" : 10}
+MAPS = {"Bind" : 1, 
+        "Haven" : 2, 
+        "Split" : 3, 
+        "Ascent" : 4,
+        "Icebox" : 5, 
+        "Breeze" : 6, 
+        "Fracture" : 7, 
+        "Abyss" : 8, 
+        "Lotus" : 9, 
+        "Sunset" : 10, 
+        "Pearl" : 11}
 
 TEAMS_CAP = {}
 MAPS_CAP = {}
@@ -68,6 +70,41 @@ for key in TEAMS:
 for key in MAPS:
     MAPS_CAP[key.upper()] = MAPS[key]
 
+def download_kaggle_files():
+    # Initialize the API
+    api = KaggleApi()
+    api.authenticate()
+
+    
+    dataset_path = 'ryanluong1/valorant-champion-tour-2021-2023-data' 
+
+    # Specify the location where you want to store the dataset files
+    download_path = 'Dataset'  
+
+    # Ensure the directory exists
+    if not os.path.exists(download_path):
+        os.makedirs(download_path)
+
+    # Specify the exact files you want to download (replace with actual filenames)
+    files_to_download = ['vct_2024/matches/map_scores.csv', 'vct_2023/matches/map_scores.csv', 'vct_2024/matches/scores.csv', 'vct_2024/macthes/overview.csv']
+
+    # Download specific files
+    for file_name in files_to_download:
+        print(f"Downloading {file_name} from Kaggle dataset {dataset_path}...")
+        api.dataset_download_file(dataset_path, file_name, path=download_path)
+
+    # Optionally, read and return the downloaded datasets as pandas DataFrames
+    dataframes = {}
+    for file_name in files_to_download:
+        file_path = os.path.join(download_path, file_name)
+        if os.path.exists(file_path):
+            dataframes[file_name] = pd.read_csv(file_path)
+            print(f"Loaded {file_name} into a DataFrame.")
+        else:
+            print(f"File {file_name} not found!")
+
+    return dataframes  # Return the loaded dataframes for further use
+
 # %%
 data = pd.read_csv("Dataset/maps_scores.csv")
 data = data[["Map", "Team A", "Team B", "Team A Score", "Team B Score"]]
@@ -75,8 +112,23 @@ data["Team A Delta"] = data["Team A Score"] - data["Team B Score"]
 data["Team B Delta"] = data["Team B Score"] - data["Team A Score"]
 data.loc[data["Team A Delta"] < 0, "Team A Win Chance"] = 0
 data.loc[data["Team A Delta"] > 0, "Team A Win Chance"] = 100
-data
 
+def update_teams_dict(team_name):
+    """Adds missing teams to the TEAMS dictionary and updates TEAMS_CAP."""
+    if team_name not in TEAMS:
+        # Add new team with the next available index
+        new_index = max(TEAMS.values()) + 1
+        TEAMS[team_name] = new_index
+        TEAMS_CAP[team_name.upper()] = new_index  # Update TEAMS_CAP with uppercase team name
+        print(f"Added new team: {team_name} with index {new_index}")
+
+
+def check_and_update_teams_in_data(data):
+    """Checks for missing teams in the dataset and updates the TEAMS dictionary."""
+    for team_a, team_b in zip(data['Team A'], data['Team B']):
+        update_teams_dict(team_a)
+        update_teams_dict(team_b)
+check_and_update_teams_in_data(data)
 # %%
 ACS = pd.read_csv("Dataset/overview.csv")
 ACS = ACS[["Match Type", "Map", "Match Name", "Team", "Average Combat Score"]]
@@ -172,17 +224,6 @@ new_Y = new_Y.astype(int)
 # Split the data into training and testing sets
 new_X_train, new_X_test, new_y_train, new_y_test = train_test_split(new_X, new_Y, test_size=0.2, random_state=42)
 
-# boost_clf.fit(new_X_train, new_y_train)
-# # new_pred = boost_clf.predict(X_test)
-# # print(X_test, y_test)
-# custom_data_df_old = pd.DataFrame([[3,1,21,200,205]], columns=new_X_train.columns)
-# new_pred = boost_clf.predict(custom_data_df_old)
-# print(new_pred)
-
-#new_accuracy = accuracy_score(y_pred=new_pred, y_true=new_y_test)
-
-#  accuracy = accuracy_score(y_pred=new_pred, y_true=new_y_test)
-# print("accuracy: ", accuracy)
 
 
 
@@ -199,28 +240,6 @@ probability_old = boost_clf.predict_proba(custom_data_df_old)[:, 1]
 new_ypred = boost_clf.predict(custom_data_df_old)
 print("team with prob", new_ypred, probability_old[0])
 
-# %%
-#Bagging pred
-#uncomment to use 
-# bag_clf.fit(X_train, y_train)
-# y_pred = bag_clf.predict(X_test)
-# accuracy = accuracy_score(y_test, y_pred)
-# print(f"Accuracy: {np.around(accuracy*100, 2)}%")
-
-# %%
-# #y_pred = rf.predict(X_test)
-# y_pred = log_regr.predict(X_test)
-# print(y_pred)
-# accuracy = accuracy_score(y_test, y_pred)
-# # conf1_matrix = confusion_matrix(y_true=y_test, y_pred=y_pred)
-# # fig, ax = plt.subplots()
-
-# # cm_display = ConfusionMatrixDisplay(confusion_matrix=conf1_matrix, display_labels=rf.classes_)
-# # cm_display.plot(ax=ax, cmap='Greens')
-
-# print(f"Accuracy: {np.around(accuracy*100, 2)}%")
-# # print("Classification Report:")
-# # print(report)
 
 # %%
 random_row = X_train.sample(n=1)
@@ -283,44 +302,47 @@ joblib.dump(boost_clf, 'boost_clf_model.pkl')
 
 # %%
 def pred(map, team_a, team_b, teama_acs, teamb_acs):
+    # Add missing teams to the TEAMS and TEAMS_CAP dictionaries if not present
+    update_teams_dict(team_a)
+    update_teams_dict(team_b)
 
+    # Now you can safely map the team names to their IDs
     team_a_name = team_a
     team_b_name = team_b
 
-    map = MAPS_CAP[map.upper()]
-    team_a = TEAMS_CAP[team_a.upper()]
-    team_b = TEAMS_CAP[team_b.upper()]
+    map = MAPS_CAP.get(map.upper(), None)
+    team_a = TEAMS_CAP.get(team_a.upper(), None)
+    team_b = TEAMS_CAP.get(team_b.upper(), None)
+
+    if map is None or team_a is None or team_b is None:
+        print("Error: One of the teams or map is not in the dictionary. Returning 50/50 prediction.")
+        # If the map or teams are missing, return a 50/50 prediction
+        return [team_a_name, 0.5, 0.5, 1.0, team_b_name, 0.0, "Unknown"]
 
     print("DEBUG", map, team_a, team_b)
 
     team = 1
     winning_team = None
     custom_data_all = pd.DataFrame([[map, team_a, team_b, teama_acs, teamb_acs]], columns=X_train.columns)
-    boost_clf = GradientBoostingClassifier(loss="log_loss",n_estimators=80 , verbose=True)
+    boost_clf = GradientBoostingClassifier(loss="log_loss", n_estimators=80, verbose=True)
     boost_clf.fit(X_train, y_train)
     boost_clf_pred = boost_clf.predict(custom_data_all)
-    #accuracy = accuracy_score(y_pred=boost_clf_pred, y_true=y_test)
-    #print("accuracy: ", accuracy)
-
 
     probability_all = boost_clf.predict_proba(custom_data_all)[:, 1]
-    loss = 1-  probability_all
+    loss = 1 - probability_all
     if boost_clf_pred == 0:
-        print(team_b_name, "will win with a probability of: ", probability_all)
+        print(f"{team_b_name} will win with a probability of {probability_all}")
         team = team_b
-        #print(f"Team A will lose with a probability of: { np.around(loss*100, 2)}%")
     else:
-        print(team_a_name, "will win with a probability of: ", probability_all)
+        print(f"{team_a_name} will win with a probability of {probability_all}")
         team = team_a
 
-    
-    #Getting the first 5 data points
+    # Getting the first 15 data points for the selected teams
     filtered_rows = []
-
     for index, row in merged_data.iterrows():
         if row['Team A'] == team or row['Team B'] == team:
             filtered_rows.append(row)
-        
+
         # Stop once we've collected 15 rows
         if len(filtered_rows) == 15:
             break
@@ -328,39 +350,51 @@ def pred(map, team_a, team_b, teama_acs, teamb_acs):
     # Convert the filtered_rows list to a DataFrame
     filtered_df = pd.DataFrame(filtered_rows)
 
-    # Assuming you have a column named "Team A Win Chance" in your original dataset
-    # Drop the "Team A Win Chance" column to create new_X
-    new_X = filtered_df.drop(["Team A Win Chance"], axis=1)
+    # Check if "Team A Win Chance" exists before dropping
+    if "Team A Win Chance" in filtered_df.columns:
+        new_X = filtered_df.drop(["Team A Win Chance"], axis=1)
+    else:
+        new_X = filtered_df  # If the column doesn't exist, no need to drop
 
-    # Extract and transform the "Team A Win Chance" column into new_Y
-    new_Y = filtered_df["Team A Win Chance"]
-    new_Y = new_Y.replace({100.0: 1, 0.0: 0})
-    new_Y = new_Y.astype(int)
+    # Check if new_X has columns before proceeding
+    if new_X.empty or len(new_X.columns) == 0:
+        print("Error: new_X DataFrame is empty or has no columns. Returning 50/50 prediction.")
+        return [team_a_name, 0.5, 0.5, 1.0, team_b_name, 0.0, "Unknown"]
+
+    # Extract and transform the "Team A Win Chance" column into new_Y if it exists
+    if "Team A Win Chance" in filtered_df.columns:
+        new_Y = filtered_df["Team A Win Chance"].replace({100.0: 1, 0.0: 0}).astype(int)
+    else:
+        new_Y = pd.Series([])  # Handle missing labels if necessary
 
     # Split the data into training and testing sets
-    new_X_train, _, new_y_train, _ = train_test_split(new_X, new_Y, test_size=0.2, random_state=42)
-    boost_clf_last15 = GradientBoostingClassifier(loss="log_loss",n_estimators=80 , verbose=True)
-    boost_clf_last15.fit(new_X_train, new_y_train)
-    #Cutom data from user
-    custom_data_df_last15 = pd.DataFrame([[map, team_a, team_b, teama_acs, teamb_acs]], columns=new_X_train.columns)
-    
+    if not new_Y.empty:
+        new_X_train, _, new_y_train, _ = train_test_split(new_X, new_Y, test_size=0.2, random_state=42)
+        boost_clf_last15 = GradientBoostingClassifier(loss="log_loss", n_estimators=80, verbose=True)
+        boost_clf_last15.fit(new_X_train, new_y_train)
+    else:
+        boost_clf_last15 = boost_clf  # Fallback to the original model
+
+    # Custom data prediction (ensure new_X has valid columns)
+    custom_data_df_last15 = pd.DataFrame([[map, team_a, team_b, teama_acs, teamb_acs]], columns=new_X.columns)
     probability_last15 = boost_clf_last15.predict_proba(custom_data_df_last15)[:, 1]
     new_ypred15 = boost_clf_last15.predict(custom_data_df_last15)
-    #print("team with prob", new_ypred15, probability_last15[0])
+
     if new_ypred15 == 0:
-        print(team_b_name, "will win with a probability of: ", probability_last15)
-        #print(f"Team A will lose with a probability of: { np.around(loss*100, 2)}%")
+        print(f"{team_b_name} will win with a probability of {probability_last15[0]}")
         winning_team = team_b_name
     else:
-        #print(TEAMS[team_a], "will win with a probability of: ", probability_all)
-        winning_team = team_a_name  
+        print(f"{team_a_name} will win with a probability of {probability_last15[0]}")
+        winning_team = team_a_name
 
+    # Upset probability and confidence
     upset_prob, confidence = calculate_upset_probability(probability_all[0], probability_last15[0])
     print(f"Combined probability of Team A winning: {(probability_all[0] + probability_last15[0]) / 2:.2f}")
     print(f"Probability of an upset: {upset_prob:.2f}")
     print(f"Confidence in prediction: {confidence:.2f}")
+
+    # Betting logic
     max_value = 1200000
-    
     if ((probability_all[0] + probability_last15[0]) / 2) < 0.5:
         if upset_prob > 0.5:
             bet_amount = max_value * upset_prob * confidence
@@ -370,9 +404,11 @@ def pred(map, team_a, team_b, teama_acs, teamb_acs):
     else:
         bet_amount = max_value * ((probability_all[0] + probability_last15[0]) / 2) * confidence
         print(f"Bet {bet_amount:.2f} on {winning_team}.")
-            
-    return [team_a_name, (probability_all[0] + probability_last15[0]) / 2, upset_prob, confidence,
-            team_b_name, bet_amount, winning_team]
+
+    return [team_a_name, (probability_all[0] + probability_last15[0]) / 2, upset_prob, confidence, team_b_name, bet_amount, winning_team]
+
+
+
     
     
     
