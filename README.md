@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Valostats, A Valorant Match Predictor
 #### UQ Computing Society 2024 People's Choice Award Winner
 ## Maintainers
@@ -62,3 +63,8 @@ chmod 600 ~/.config/kaggle/kaggle.json  # Secure the file
 This should setup your Kaggle API, Keep in mind the dataset is updated once a month and likely is the model is displaying 50/50 odds it means there is not enough data about either team, meaning they are likely new teams. 
 
 Credits go to Ryanluong1 on kaggle for the valorant dataset, and the Orloxx23 for the vlresports API
+=======
+# Valostats
+UQCS Hackathon Peoples Choice 2024
+A Gradient Boosting machine learning model that accurately predicts outcomes of upcoming VCT matches based on 2024 season data for your own betting purposes
+>>>>>>> 7516590cac539e68acc5ba45fe688272a10a3131
