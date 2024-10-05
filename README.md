@@ -16,10 +16,10 @@
 **Abhishek Bhattacharjee** - Pickle
 
 
-### Background
+## Background
 This project started as a joke, it was inspired by a friend's affinity to gamble Twitch channel points and constantly losing, hence we made a predictor to help with his predictions using machine learning
 
-### Pre requisites
+## Pre requisites
 For starters get NPM (Node.js) installed on your local machine, then cd into:
 ```bash
 cd vlresports-1.0.4
@@ -54,7 +54,7 @@ conda install kaggle
 conda install pandas
 ```
 
-### Kaggle dataset setup
+## Kaggle dataset setup
 To use the continuous dataset updater through kaggle API, make sure to do the below:
 Go to Kaggle.com and log in.
 Navigate to your account settings by clicking on your profile picture in the top-right corner and selecting Account.
