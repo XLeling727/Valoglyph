@@ -2,12 +2,18 @@
 # Valostats, A Valorant Match Predictor
 #### UQ Computing Society 2024 People's Choice Award Winner
 ## Maintainers
-Team Lead, Design, Frontend and Data Analysis - Zain Al-Saffi 
+Team Lead, Design, Frontend and Data Analysis - Zain Al-Saff
+i 
 Plots and graphs - Varun Singh
+
 Partial frontend - Aman Gupta
+
 Boosting algorithms - Jasnoor Matharu
+
 ML, Frontend and Data processing - Lehan Ling
+
 Pickle - Abhishek Bhattacharjee
+
 
 ### Background
 This project started as a joke, it was inspired by a friend's affinity to gamble Twitch channel points and constantly losing, hence we made a predictor to help with his predictions using machine learning
