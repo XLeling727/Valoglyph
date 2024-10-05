@@ -2,17 +2,18 @@
 # Valostats, A Valorant Match Predictor
 #### UQ Computing Society 2024 People's Choice Award Winner
 ## Maintainers
-Team Lead, Design, Frontend and Data Analysis - Zain Al-Saff
-i 
-Plots and graphs - Varun Singh
 
-Partial frontend - Aman Gupta
+**Zain Al-Saffi** - Team Lead, Design, Frontend and Data Analysis
 
-Boosting algorithms - Jasnoor Matharu
+**Varun Singh** - Plots and graphs
 
-ML, Frontend and Data processing - Lehan Ling
+**Aman Gupta** - Partial frontend 
 
-Pickle - Abhishek Bhattacharjee
+**Jasnoor Matharu** - Boosting algorithms
+
+**Lehan Ling** - ML, Frontend and Data processing 
+
+**Abhishek Bhattacharjee** - Pickle
 
 
 ### Background
