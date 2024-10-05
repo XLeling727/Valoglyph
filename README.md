@@ -69,4 +69,4 @@ chmod 600 ~/.config/kaggle/kaggle.json  # Secure the file
 ```
 This should setup your Kaggle API, Keep in mind the dataset is updated once a month and likely is the model is displaying 50/50 odds it means there is not enough data about either team, meaning they are likely new teams. 
 
-Credits go to Ryanluong1 on kaggle for the valorant dataset, and the Orloxx23 for the vlresports API
+Credits go to Ryanluong1 on kaggle for the valorant dataset, and the Orloxx23 for the vlresports API.
