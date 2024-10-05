@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Valostats, A Valorant Match Predictor
 #### UQ Computing Society 2024 People's Choice Award Winner
 ## Maintainers
