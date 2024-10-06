@@ -3,7 +3,7 @@
 #### UQ Computing Society 2024 People's Choice Award Winner
 ## Maintainers
 
-**Zain Al-Saffi** - Team Lead, Design, Frontend and Data Analysis
+**Zain Al-Saffi** - Team Lead, Design, Frontend, Data Analysis and ML
 
 **Varun Singh** - Plots and graphs
 
